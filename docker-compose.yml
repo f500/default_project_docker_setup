@@ -1,0 +1,40 @@
+version: '3.2'
+services:
+  database:
+    build: docker/mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: future500
+      MYSQL_DATABASE: future500
+      MYSQL_USER: future500
+      MYSQL_PASSWORD: future500
+    volumes:
+      - db:/var/lib/mysql
+      - ./data/database.sql:/docker-entrypoint-initdb.d/database.sql
+    ports:
+      - "8041:3306"
+
+  webserver:
+    build: docker/nginx
+    depends_on:
+      - php-fpm
+    volumes:
+      - ./:/opt/project
+    ports:
+    - "8040:80"
+
+  php-cli:
+    build: docker/php-cli
+    depends_on:
+      - database
+    volumes:
+      - ./:/opt/project
+
+  php-fpm:
+    build: docker/php-fpm
+    depends_on:
+      - database
+    volumes:
+      - ./:/opt/project
+
+volumes:
+  db:
