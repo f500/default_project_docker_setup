@@ -1,4 +1,4 @@
-#Example of a docker setup for local projects
+# Example of a docker setup for local projects
 
 You can use this project to as base for you development projects.
 
